@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Redirecionando...</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    .loader {
+      margin: 20px auto;
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #3498db;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <h2>Estamos te redirecionando para a oferta...</h2>
+  <div class="loader"></div>
+  <p>Se não for redirecionado automaticamente, <a id="manual-link" href="#">clique aqui</a>.</p>
+
+  <script>
+    (function () {
+      const qs = new URLSearchParams(window.location.search);
+      const id = qs.get("id");
+      const target = qs.get("target");
+
+      if (!id || !target) {
+        document.body.innerHTML = "<h3>Link inválido</h3>";
+        return;
+      }
+
+      const redirectApi = "/api/r?id=" + encodeURIComponent(id) + "&target=" + encodeURIComponent(target);
+      fetch(redirectApi, { method: "GET", redirect: "manual" })
+        .then(response => {
+          if (response.status === 302) {
+            const loc = response.headers.get("Location");
+            if (loc) {
+              window.location.href = loc;
+            }
+          } else {
+            // fallback: tenta abrir direto
+            window.location.href = redirectApi;
+          }
+        })
+        .catch(err => {
+          console.error("Redirect error:", err);
+          window.location.href = target;
+        });
+
+      // Atualiza link manual
+      document.getElementById("manual-link").href = target;
+    })();
+  </script>
+</body>
+</html>

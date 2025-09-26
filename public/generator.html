@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerador de Links - Redirector</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    input, button, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    button {
+      background: #3498db;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #2980b9;
+    }
+    textarea {
+      resize: none;
+    }
+    small {
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Gerador de Links - Redirector</h2>
+    <p>Insira o link da casa de apostas:</p>
+    <input type="text" id="targetUrl" placeholder="https://bookmaker.com/signup" />
+
+    <button onclick="generateLink()">Gerar Link</button>
+
+    <p>Seu link de redirect:</p>
+    <textarea id="output" rows="3" readonly ondblclick="this.select()"></textarea>
+    <small>Dê <b>dois cliques</b> no campo acima para selecionar o link.</small>
+  </div>
+
+  <script>
+    function uuidv4(){
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0,
+            v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    function generateLink() {
+      const target = document.getElementById('targetUrl').value.trim();
+      if (!target) {
+        alert("Preencha o link da casa de apostas.");
+        return;
+      }
+
+      // Gera visitor_id automaticamente
+      const visitorId = uuidv4();
+
+      // Monta link final
+      const base = window.location.origin; 
+      const redirectLink = `${base}/redirect.html?id=${encodeURIComponent(visitorId)}&target=${encodeURIComponent(target)}`;
+
+      // Mostra no campo de saída
+      document.getElementById('output').value = redirectLink;
+    }
+  </script>
+</body>
+</html>
