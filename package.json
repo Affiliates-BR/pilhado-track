@@ -1,6 +1,8 @@
 {
-  "name": "redirector-api",
+  "name": "pilhado-track",
   "version": "1.0.0",
   "type": "module",
-  "dependencies": {}
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0"
+  }
 }
